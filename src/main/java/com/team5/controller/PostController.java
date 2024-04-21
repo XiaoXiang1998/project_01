@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team5.model.Member;
 import com.team5.model.MemberService;
@@ -45,18 +46,22 @@ public class PostController {
 		Post post =new Post();
 		
 		if (mf != null && !mf.isEmpty()) { // 檢查圖片是否不為空
-			String fileName = mf.getOriginalFilename();
-			String fileDir = "D:/Action/workspace/SpringBootRestfulHw/src/main\\webapp\\WEB-INF\\commentPicture";
+			 String fileName = UUID.randomUUID().toString(); // 生成唯一的文件名
+
+			String fileDir = "D:/Action/workspace/TestProject/src/main\\webapp\\WEB-INF\\commentPicture";
 
 			File fileDirPath = new File(fileDir);
 			if (!fileDirPath.exists()) {
 				fileDirPath.mkdirs();
 			}
+	        String fileExtension = FilenameUtils.getExtension(mf.getOriginalFilename()); // 獲取文件擴展名
+	        String uploadedFileName = fileName + "." + fileExtension; // 構造完整的文件名
 
-			File uploadedFile = new File(fileDirPath, fileName);
+
+			File uploadedFile = new File(fileDirPath, uploadedFileName);
 			mf.transferTo(uploadedFile);
 
-			post.setProductphoto("commentPicture/" + fileName);
+			post.setProductphoto("commentPicture/" + uploadedFileName);
 		}
 		Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
 
