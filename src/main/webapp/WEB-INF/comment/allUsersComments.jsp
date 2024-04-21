@@ -1,9 +1,10 @@
 <%@page import="java.sql.Time"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isErrorPage="true"   import="java.util.*"%>
+    pageEncoding="UTF-8" isErrorPage="true" import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="basePath" value="${pageContext.request.contextPath}" />
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,34 +84,49 @@
         font-size: 14px;
         line-height: 1.5;
     }
+
+    /* New CSS for separating user comments */
+    .comment-container {
+        margin-top: 20px;
+    }
+
+    .comment {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 </style>
 </head>
 <body>
-<div class="container">
     <c:forEach items="${allMembers}" var="member">
-        <div class="item">
-            <i class="avatar"></i>
-            <div class="info">
-                <p class="name">${member.name}</p>
-                <!-- 這裡是會員的其他相關資訊，比如評分、時間等 -->
-                <c:forEach items="${member.posts}" var="post">
-                    <c:if test="${not empty post.buyerrate}">
-                        <c:forEach begin="1" end="${post.buyerrate}">
-                            <img src="commentPicture/output.png" alt="star" width="20" height="20">
-                        </c:forEach>
-                    </c:if>
-                    <c:if test="${not empty post.commenttime}">
-                        <fmt:formatDate value="${post.commenttime}" pattern="yyyy-MM-dd HH:mm" var="formattedCommentTime" />
-                        <p class="time">${formattedCommentTime}</p>
-                    </c:if>
-                    <c:if test="${not empty post.productphoto}">
-                        <img class="product-photo" src="${pageContext.request.contextPath}/${post.productphoto}" alt="產品圖片">
-                    </c:if>
-                    <p class="text">${post.commentcontent}</p>
-                </c:forEach>
-            </div>
-        </div>
+        <div class="container">
+            <c:forEach items="${member.posts}" var="post">
+                <div class="item">
+                    <i class="avatar"></i>
+                    <div class="info">
+                        <p class="name">${member.name}</p>
+                        <div class="comment-container"> <!-- New container for each comment -->
+                            <div class="comment"> <!-- New container for each comment -->
+                                <c:if test="${not empty post.buyerrate}">
+                                    <c:forEach begin="1" end="${post.buyerrate}">
+                                        <img src="commentPicture/output.png" alt="star" width="20" height="20">
+                                    </c:forEach>
+                                </c:if>
+                                <c:if test="${not empty post.commenttime}">
+                                    <fmt:formatDate value="${post.commenttime}" pattern="yyyy-MM-dd HH:mm" var="formattedCommentTime" />
+                                    <p class="time">${formattedCommentTime}</p>
+                                </c:if>
+                                <c:if test="${not empty post.productphoto}">
+                                    <img class="product-photo" src="${pageContext.request.contextPath}/${post.productphoto}" alt="產品圖片">
+                                </c:if>
+                                <p class="text">${post.commentcontent}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div> <!-- Close the container inside the loop -->
     </c:forEach>
-</div>
 </body>
 </html>
