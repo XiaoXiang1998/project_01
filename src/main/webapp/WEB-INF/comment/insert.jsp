@@ -45,9 +45,9 @@ button {
 </style>
 </head>
 <body>
-
-	<button onclick="redirectToHomepage()">返回</button>
-	<form action="post" method="post" class="basic-grey"
+	<%@ include file="indexcomment.jsp" %>
+	
+		<form action="post" method="post" class="basic-grey"
 		id="commentForm" enctype="multipart/form-data">
 		<h1 id="alter">
 			評論區<span>請發表友善評論!</span>
@@ -70,9 +70,6 @@ button {
 	</form>
 
 	<script>
-		function redirectToHomepage() {
-			window.location.href = 'indexcomment';
-		}
 
 		$(document).ready(function() {
 			var rating = 0;

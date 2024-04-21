@@ -23,6 +23,8 @@ body {
 }
 
 .container {
+    position: relative; /* 让容器相对定位 */
+
 	max-width: 800px;
 	margin: 0 auto;
 	padding: 20px;
@@ -87,21 +89,20 @@ body {
 	line-height: 1.5;
 }
 .dropdown {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: absolute; /* 将 dropdown 设置为绝对定位 */
+    top: 20px; /* 距离容器顶部的距离 */
+    right: 20px; /* 距离容器右侧的距离 */
+    z-index: 999; /* 确保下拉菜单按钮位于顶层 */
 }
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: relative; /* 将下拉菜单设置为相对定位 */
     background-color: #fff;
     min-width: 120px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1;
     border-radius: 5px;
-    top: 20px; /* 往下移動 20px */
-    right: 0; /* 調整下拉選單位置，使其右對齊 */
 }
 
 .dropdown-content a {
@@ -163,6 +164,8 @@ body {
 </style>
 </head>
 <body>
+	<%@ include file="indexcomment.jsp" %>
+
 		<div class="container">
 	    <c:forEach items="${post}" var="comment">
 	        <div class="item" data-comment-id=${comment.commentid}>
@@ -305,7 +308,7 @@ function updateComment(commentId) {
 }
 </script>
 <script>
-document.querySelectorAll('.item').forEach(item => {
+/*document.querySelectorAll('.item').forEach(item => {
     item.querySelector('.dropdown-content a:nth-of-type(1)').addEventListener('click', function(event) {
         event.preventDefault();
         const commentId = item.dataset.commentId;
@@ -313,6 +316,20 @@ document.querySelectorAll('.item').forEach(item => {
         const rect = item.getBoundingClientRect();
         const top = rect.top + window.scrollY;
         const left = rect.left + window.scrollX;
+        editForm.style.display = 'block';
+        editForm.style.top = `${top}px`;
+        editForm.style.left = `${left}px`;
+    });
+});*/
+document.querySelectorAll('.item').forEach(item => {
+    item.querySelector('.dropdown-content a:nth-of-type(1)').addEventListener('click', function(event) {
+        event.preventDefault();
+        const commentId = item.dataset.commentId;
+        const editForm = document.getElementById('editForm' + commentId);
+        const rect = item.getBoundingClientRect();
+        const containerRect = document.querySelector('.container').getBoundingClientRect();
+        const top = containerRect.top - window.scrollY; // 使用容器顶部位置
+        const left = containerRect.right - editForm.offsetWidth - window.scrollX; // 使用容器右侧位置减去编辑表单宽度
         editForm.style.display = 'block';
         editForm.style.top = `${top}px`;
         editForm.style.left = `${left}px`;

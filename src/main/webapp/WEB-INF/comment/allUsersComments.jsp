@@ -99,6 +99,8 @@
 </style>
 </head>
 <body>
+	<%@ include file="indexcomment.jsp" %>
+
     <c:forEach items="${allMembers}" var="member">
         <div class="container">
             <c:forEach items="${member.posts}" var="post">
