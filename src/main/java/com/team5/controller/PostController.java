@@ -40,7 +40,6 @@ public class PostController {
 	private MemberService mService;
 	
 	@PostMapping("/post")
-	@ResponseBody
 	public String postAction(@RequestParam("commentContent") String commentContent,@RequestParam("productimage")  MultipartFile mf,@RequestParam("rate") int rate,
             HttpSession session) throws IllegalStateException, IOException {
 		Member loggedInMember = (Member) session.getAttribute("loggedInMember");
@@ -76,7 +75,7 @@ public class PostController {
 		post.setMember(loggedInMember);
 		pService.insert(post);
 		
-		return "success";
+		return "redirect:indexcomment";
 	}
 	
 	 @GetMapping("/userComments")
