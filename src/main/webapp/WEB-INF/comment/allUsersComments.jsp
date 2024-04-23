@@ -112,6 +112,14 @@ body {
 	background: url(commentPicture/output.png) no-repeat;
 	background-size: 24px 24px;
 }
+
+.seller-reply {
+    background-color: #f0f0f0; /* 将背景颜色调暗 */
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #333; /* 设置文本颜色为黑色 */
+}
 </style>
 </head>
 <body>
@@ -153,16 +161,16 @@ body {
                                 </p>
                                 <!-- Hidden reply form -->
                                 <div id="replyFormContainer${post.commentid}" style="display: none;">
-										 <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}" enctype="multipart/form-data">
+										 <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
                                     <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
                                         <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
                                         <input type="hidden" name="memberId" value="${member.sid}">
                                         <input type="hidden" name="commentId" value="${post.commentid}">
-                                        <label><span>回覆內容:</span> <textarea id="replyContent" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                                        <span class="replyContent">輸入的字數:0/100</span><br />
+                                        <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
+                                        <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
                                         <!-- Rating stars -->
                                         <div class="bit-com">
-                                            评分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
+                                            評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
                                         </div>
                                         <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
                                         <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
@@ -206,8 +214,10 @@ body {
 
 
 	<script>
-	$(function() {
-	    $('.replyLink').click(function(event) {
+	$(function(){
+		
+	
+	  $('.replyLink').click(function(event) {
 	        event.preventDefault();
 	        var targetId = $(this).data('target');
 	        var commentId = $(this).data('commentid');
@@ -217,6 +227,8 @@ body {
 	            'left' : containerOffset.left + 'px'
 	        }).show();
 			
+	        $('#' + targetId).find('textarea').focus();
+
 	    
 	        $(this).hide();
 	        
@@ -235,7 +247,7 @@ body {
 	    });    
 
 	    $('body').on('submit', '.bootstrap-frm', function() {
-	        var commentId = $(this).data('commentid');
+	        var commentId = $(this).attr('id').replace('replyForm', ''); // 获取表单的 commentid
 	        $('#replyRate' + commentId).val(rating);
 
 	        if (rating < 1) {
@@ -248,22 +260,25 @@ body {
 	        $('.replyLink[data-commentid="' + commentId + '"]').hide();
 	        return true;
 	    });
-
-	    $('body').on('input', '.bootstrap-frm textarea', function() {
+	    $('body').on('input', 'textarea[id^="replyContent"]', function() {
+	        var commentId = $(this).attr('id').replace('replyContent', '');
 	        var text = $(this).val();
 	        var charCount = text.length;
-	        $(this).siblings('.replyContent').text(charCount + ' / 100');
+	        $('.replyContent' + commentId).text('輸入的字數:' + charCount + '/100');
 	        if (charCount > 100) {
 	            $(this).val(text.slice(0, 100));
-	            $(this).siblings('.replyContent').text('100 / 100');
+	            $('.replyContent' + commentId).text('輸入的字數:100/100');
 	        }
 	    });
+	    
 	});
+	    function closeReplyForm(commentId) {
+		    $('#replyFormContainer' + commentId).hide();
+		    $('.replyLink[data-commentid="' + commentId + '"]').show();
+		}
 	
-	function closeReplyForm(commentId) {
-	    $('#replyFormContainer' + commentId).hide();
-	    $('.replyLink[data-commentid="' + commentId + '"]').show();
-	}
+	
+	
 	</script>
 </body>
 </html>
