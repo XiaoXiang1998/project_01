@@ -217,12 +217,11 @@ body {
 	            'left' : containerOffset.left + 'px'
 	        }).show();
 			
-	     // 隱藏被回覆的超連結
+	    
 	        $(this).hide();
 	        
-	        // 重置评分值为0
 	        rating = 0;
-	        // 更新评分表单的ID，以便关联评分值
+	        
 	        $('#replyForm' + commentId).data('commentid', commentId);
 	    });
 
@@ -236,9 +235,7 @@ body {
 	    });    
 
 	    $('body').on('submit', '.bootstrap-frm', function() {
-	        // 获取相应评论区域的评论ID
 	        var commentId = $(this).data('commentid');
-	        // 更新评分元素的ID
 	        $('#replyRate' + commentId).val(rating);
 
 	        if (rating < 1) {
@@ -246,10 +243,8 @@ body {
 	            return false;
 	        }
 	        
-	     	// 在提交後隱藏回覆表單
 	        $('#replyFormContainer' + commentId).hide();
 
-	        // 隱藏回覆買家的超連結
 	        $('.replyLink[data-commentid="' + commentId + '"]').hide();
 	        return true;
 	    });
@@ -266,9 +261,7 @@ body {
 	});
 	
 	function closeReplyForm(commentId) {
-	    // 隱藏回覆表單
 	    $('#replyFormContainer' + commentId).hide();
-	    // 顯示回覆買家的超連結
 	    $('.replyLink[data-commentid="' + commentId + '"]').show();
 	}
 	</script>
