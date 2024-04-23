@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.sql.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,10 +107,48 @@ public class PostController {
 	 }
 	 
 	 @GetMapping("/allUsersComments")
-	    public String viewAllUsersComments(Model model) {
-	        List<Member> allMembersWithPosts = mService.getAllMembersWithPosts();
-	        model.addAttribute("allMembers", allMembersWithPosts);
-	        return "comment/allUsersComments";
+	 public String viewAllUsersComments(Model model) {
+	     List<Member> allMembersWithPosts = mService.getAllMembersWithPosts();
+	     model.addAttribute("allMembers", allMembersWithPosts);
+	     return "comment/allUsersComments";
+	 }
+	 
+	 @PostMapping("/submitReply")
+	    public String submitReply(@RequestParam("memberId") Integer memberId, 
+	                              @RequestParam("replyContent") String replyContent,
+	                              @RequestParam("rate") Integer sellerRate,
+	                              @RequestParam("commentId") Integer commentId, 
+	                              HttpSession session) {
+			Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+	        // 保存回复内容
+	        Post reply = new Post();
+	        reply.setReplayconetnt(replyContent);
+	        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String formattedDateTime = sdf.format(currentTimestamp);
+	        reply.setReplaytime(currentTimestamp);
+	        reply.setSellerrate(sellerRate);
+	        reply.setMember(loggedInMember);
+	        
+	        
+	        reply.setRepliedcommentid(commentId);
+	        
+	       pService.insert(reply);
+	       
+	        
+
+	        // 更新会员信息
+	        Member member = mService.findById(memberId).orElse(null);
+	        if (member != null) {
+	            // 更新评论次数和累积分数
+	            member.setReviewcount(member.getReviewcount() + 1);
+	            member.setCumulativescore(member.getCumulativescore() + sellerRate);
+	            mService.insertMember(member);
+	        }
+
+	        return "redirect:allUsersComments";
 	    }
 	
 }

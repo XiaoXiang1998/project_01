@@ -27,5 +27,11 @@ public class MemberService {
     public List<Member> getAllMembersWithPosts() {
         return mRepository.findAllWithPosts();
     }
+
+	public Member insertMember (Member member) {
+		return mRepository.save(member);
+	}
 	
+    
+    
 }

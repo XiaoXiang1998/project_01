@@ -49,9 +49,11 @@ body {
 }
 
 .info {
-	display: inline-block;
-	vertical-align: top;
-	width: calc(100% - 70px); /* 50px avatar + 20px margin */
+
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 70px);
+    position: relative;
 }
 
 .name {
@@ -89,10 +91,10 @@ body {
 	line-height: 1.5;
 }
 .dropdown {
-    position: absolute; /* 将 dropdown 设置为绝对定位 */
-    top: 20px; /* 距离容器顶部的距离 */
-    right: 20px; /* 距离容器右侧的距离 */
-    z-index: 999; /* 确保下拉菜单按钮位于顶层 */
+    position: absolute;
+    top: 10px; /* 调整按钮与评论条目顶部的距离 */
+    right: 10px; /* 调整按钮与评论条目右侧的距离 */
+    z-index: 1; /* 确保按钮位于其他内容之上 */
 }
 
 .dropdown-content {
@@ -119,6 +121,7 @@ body {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
 .edit-window {
     position: fixed;
     top: 50%;

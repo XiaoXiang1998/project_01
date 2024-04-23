@@ -28,10 +28,11 @@ public class Post {
 	private String replayconetnt;
 	private java.sql.Timestamp replaytime;
 	private Integer sellerrate;
-	
+	private Integer repliedcommentid;
 	@ManyToOne
 	@JoinColumn(name="fk_userid")
 	private Member member;
+	
 	
 	
 	
@@ -170,6 +171,18 @@ public class Post {
 
 
 
+	public Integer getRepliedcommentid() {
+		return repliedcommentid;
+	}
+
+
+
+	public void setRepliedcommentid(Integer repliedcommentid) {
+		this.repliedcommentid = repliedcommentid;
+	}
+
+
+	
 	
 	
 }
