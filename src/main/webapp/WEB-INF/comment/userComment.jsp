@@ -193,6 +193,13 @@ body {
 	                    </c:otherwise>
 	                </c:choose>
 	                <p class="text">${comment.commentcontent}</p>
+	                <c:if test="${comment.member.seller eq 1}">
+                    <p>${comment.replayconetnt}</p>
+                    <p>${comment.replaytime}</p>
+                    <p> <c:forEach begin="1" end="${comment.sellerrate}">
+	                        <img src="commentPicture/output.png" alt="star" width="20" height="20">
+	                    </c:forEach></p>
+                </c:if>
 	                <div class="dropdown">
 	                    <button class="dropbtn">&#8942;</button>
 	                    <div class="dropdown-content">
