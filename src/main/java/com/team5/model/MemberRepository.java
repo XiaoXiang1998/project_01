@@ -10,6 +10,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	 // 根據帳號和密碼查找成員
     Optional<Member> findByAccountAndPassword(String account, String password);
  // 查询所有用户以及每个用户的评论数据
-    @Query("SELECT m FROM Member m JOIN FETCH m.posts")
+    @Query("SELECT m FROM Member m LEFT JOIN FETCH m.posts p ORDER BY p.commenttime DESC")
     List<Member> findAllWithPosts();
 }

@@ -82,7 +82,7 @@ public class PostController {
 	    public String getUserComments(Model model, HttpSession session) {
 	        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 	        
-	       List<Post> userComments = pService.findByMember(loggedInMember);
+	       List<Post> userComments = pService.findByMemberOrderByCommenttimeDesc(loggedInMember);
 	        
 	        model.addAttribute("post", userComments);
 	        

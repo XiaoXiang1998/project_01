@@ -57,9 +57,9 @@ public class PostService {
 		return pRepository.findAll();
 	}
 
-	public List<Post> findByMember(Member member) {
-		return pRepository.findByMember(member);
-	}
+	public List<Post> findByMemberOrderByCommenttimeDesc(Member member) {
+        return pRepository.findByMemberOrderByCommenttimeDescReplaytimeDesc(member);
+    }
 	
 	
 	

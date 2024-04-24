@@ -186,7 +186,7 @@ body {
                                         <!-- Display seller's reply within buyer's comment -->
                                         <div class="seller-reply">
                                             <!-- Display reply content -->
-                                            <p class="text">賣家回覆:${reply.replayconetnt}</p>
+                                            <p class="text">賣家回覆<br/><br/>${reply.replayconetnt}</p>
                                             <!-- Display reply time if available -->
                                             <c:if test="${not empty reply.replaytime}">
                                                 <fmt:formatDate value="${reply.replaytime}" pattern="yyyy-MM-dd HH:mm" var="formattedReplayTime" />
