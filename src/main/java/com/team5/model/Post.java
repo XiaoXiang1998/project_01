@@ -29,6 +29,7 @@ public class Post {
 	private java.sql.Timestamp replaytime;
 	private Integer sellerrate;
 	private Integer repliedcommentid;
+	
 	@ManyToOne
 	@JoinColumn(name="fk_userid")
 	private Member member;

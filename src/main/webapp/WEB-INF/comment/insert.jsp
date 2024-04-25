@@ -54,7 +54,7 @@ button {
 		</h1>
 		 <label> <span>要給的評論 :</span> <textarea id="CommentContent"
 				name="commentContent" rows="10" cols="30" maxlength="100"
-				placeholder="Your Message to Us" required></textarea>
+				placeholder="請寫下您的評論"></textarea>
 		</label> <span id="charCount" class="charCount">輸入的字數:0/100</span><br /> <label>
 			<span id="image">圖片:</span> <input id="file" type="file"
 			name="productimage" />

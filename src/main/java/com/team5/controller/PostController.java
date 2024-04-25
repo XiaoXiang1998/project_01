@@ -11,6 +11,8 @@ import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.sql.Insert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,7 +42,7 @@ public class PostController {
 	private MemberService mService;
 	
 	@PostMapping("/post")
-	public String postAction(@RequestParam("commentContent") String commentContent,@RequestParam("productimage")  MultipartFile mf,@RequestParam("rate") int rate,
+	public String postAction(@RequestParam(value = "commentContent", required = false) String commentContent,@RequestParam("productimage")  MultipartFile mf,@RequestParam("rate") int rate,
             HttpSession session) throws IllegalStateException, IOException {
 		Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 		
@@ -78,16 +80,16 @@ public class PostController {
 		return "redirect:indexcomment";
 	}
 	
-	 @GetMapping("/userComments")
-	    public String getUserComments(Model model, HttpSession session) {
-	        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
-	        
-	       List<Post> userComments = pService.findByMemberOrderByCommenttimeDesc(loggedInMember);
-	        
-	        model.addAttribute("post", userComments);
-	        
-	        return "comment/userComment"; 
-	    }
+	@GetMapping("/userComments")
+    public String getUserComments(Model model, HttpSession session) {
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+        
+       List<Post> userComments = pService.findByMemberOrderByCommenttimeDesc(loggedInMember);
+        
+        model.addAttribute("post", userComments);
+        
+        return "comment/userComment"; 
+    }
 	 
 	 @DeleteMapping("/post/{pid}")
 	 public ResponseEntity<String> deleteAction(@PathVariable("pid") Integer id) {
@@ -108,9 +110,73 @@ public class PostController {
 	 @GetMapping("/allUsersComments")
 	 public String viewAllUsersComments(Model model) {
 	     List<Member> allMembersWithPosts = mService.getAllMembersWithPosts();
+	     
+	     // 统计不同评分条件下的数据数量
+	     int fiveStarsCount = 0;
+	     int fourStarsCount = 0;
+	     int threeStarsCount = 0;
+	     int twoStarsCount = 0;
+	     int oneStarCount = 0;
+	     int totalPosts = 0; // 添加总数统计
+	     int commentedPostsCount = 0;
+	     int postsWithImagesCount = 0; // 统计帖子中包含图片的数量
+
+	     for (Member member : allMembersWithPosts) {
+	         for (Post post : member.getPosts()) {
+	             // 进行空值检查
+	             Integer buyerrate = post.getBuyerrate();
+	             if (buyerrate != null) {
+	                 String commentContent = post.getCommentcontent();
+	                 if (!commentContent.isEmpty()) {
+	                     // 统计已留言的帖子数量
+	                     commentedPostsCount++;
+	                 }
+	                     // 统计各个评分条件下的数据数量
+	                     switch (buyerrate) {
+	                         case 5:
+	                             fiveStarsCount++;
+	                             break;
+	                         case 4:
+	                             fourStarsCount++;
+	                             break;
+	                         case 3:
+	                             threeStarsCount++;
+	                             break;
+	                         case 2:
+	                             twoStarsCount++;
+	                             break;
+	                         case 1:
+	                             oneStarCount++;
+	                             break;
+	                         default:
+	                             break;
+	                     }
+	                     
+	                  // 检查帖子中是否包含图片
+	                     if (post.getProductphoto() != null && !post.getProductphoto().isEmpty()) {
+	                         postsWithImagesCount++;
+	                     }
+	                 
+	                 // 增加总数统计
+	                 totalPosts++;
+	             }
+	         }
+	     }
+
+	     // 将统计结果传递到前端页面
 	     model.addAttribute("allMembers", allMembersWithPosts);
+	     model.addAttribute("fiveStarsCount", fiveStarsCount);
+	     model.addAttribute("fourStarsCount", fourStarsCount);
+	     model.addAttribute("threeStarsCount", threeStarsCount);
+	     model.addAttribute("twoStarsCount", twoStarsCount);
+	     model.addAttribute("oneStarCount", oneStarCount);
+	     model.addAttribute("totalPosts", totalPosts); // 添加总数传递
+	     model.addAttribute("commentedPostsCount", commentedPostsCount);
+	     model.addAttribute("postsWithImagesCount", postsWithImagesCount); // 添加帖子中包含图片的数量传递
+
 	     return "comment/allUsersComments";
 	 }
+	     
 	 
 	 @PostMapping("/submitReply")
 	    public String submitReply(@RequestParam("memberId") Integer memberId, 
