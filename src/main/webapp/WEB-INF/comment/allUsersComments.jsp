@@ -121,6 +121,9 @@ body {
     color: #333; /* 设置文本颜色为黑色 */
 }
 
+
+
+
 /* 預設按鈕樣式 */
 .tab button {
   border: none;
@@ -175,7 +178,7 @@ body {
 	<%@ include file="indexcomment.jsp"%>
 	
 <div class="tab">
-  <button class="tablinks" onclick="openTab(event, 'all')">
+  <button class="tablinks" onclick="openTab(event, 'all')" id="defaultTab">
     全部<span class="badge">${totalPosts}</span>
   </button>
   <button class="tablinks" onclick="openTab(event, 'fiveStars')">
@@ -300,26 +303,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -375,26 +358,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -450,26 +413,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -526,26 +469,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -601,26 +524,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -675,26 +578,6 @@ body {
                   </c:if>
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -748,26 +631,6 @@ body {
                   <img class="product-photo" src="${pageContext.request.contextPath}/${post.productphoto}" alt="產品圖片">
                   <p class="text">${post.commentcontent}</p>
                 </div>
-                <c:if test="${loggedInMember.seller == 1 and not empty post.buyerrate}">
-                  <p>
-                    <a href="#" class="replyLink" data-target="replyFormContainer${post.commentid}" data-commentid="${post.commentid}">回覆買家</a>
-                  </p>
-                  <div id="replyFormContainer${post.commentid}" style="display: none;">
-                    <form action="/submitReply" method="post" class="bootstrap-frm" id="replyForm${post.commentid}">
-                      <span class="close-btn" onclick="closeReplyForm('${post.commentid}')">×</span>
-                      <h1 id="alter">回覆<span>請填寫回覆內容</span></h1>
-                      <input type="hidden" name="memberId" value="${member.sid}">
-                      <input type="hidden" name="commentId" value="${post.commentid}">
-                      <label><span>回覆內容:</span> <textarea id="replyContent${post.commentid}" name="replyContent" rows="10" cols="30" maxlength="100" placeholder="Your Reply" required></textarea></label>
-                      <span class="replyContent${post.commentid}" id="replyContent" data->輸入的字數:0/100</span><br />
-                      <div class="bit-com">
-                        評分:<span class="bit" id="bit1"></span> <span class="bit" id="bit2"></span> <span class="bit" id="bit3"></span> <span class="bit" id="bit4"></span> <span class="bit" id="bit5"></span>
-                      </div>
-                      <input type="hidden" name="rate" id="replyRate${post.commentid}" value="0">
-                      <label><span>&nbsp;</span> <input type="submit" class="button" value="Send Reply" /></label>
-                    </form>
-                  </div>
-                </c:if>
                 <c:forEach items="${allMembers}" var="seller">
                   <c:forEach items="${seller.posts}" var="reply">
                     <c:if test="${reply.repliedcommentid == post.commentid}">
@@ -866,28 +729,23 @@ body {
 	</script>
 	
 	<script>
-	function openTab(evt, tabName) {
-		  var i, tabcontent, tablinks;
-		  tabcontent = document.getElementsByClassName("tabcontent");
-		  for (i = 0; i < tabcontent.length; i++) {
-		    tabcontent[i].style.display = "none";
-		  }
-		  tablinks = document.getElementsByClassName("tablinks");
-		  for (i = 0; i < tablinks.length; i++) {
-		    tablinks[i].className = tablinks[i].className.replace(" active", "");
-		  }
-		  document.getElementById(tabName).style.display = "block";
-		  evt.currentTarget.className += " active";
-		}
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
 
-		// 頁面加載後，顯示全部內容
-		document.getElementById("all").click();
-		
-		document.getElementById("commentsButton").click();
-		
-	    document.getElementById("media").click();
-
-
-	</script>
+  document.addEventListener("DOMContentLoaded", function(event) { 
+	    document.getElementById("defaultTab").click();
+	});
+</script>
 </body>
 </html>
